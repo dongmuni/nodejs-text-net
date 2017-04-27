@@ -1,0 +1,27 @@
+{
+  "name": "@rankwave/nodejs-text-net",
+  "version": "0.1.0",
+  "description": "Text-base (like SMTP) client-server module. supporting multi worker clients, woker-server ping keep-alive, worker load-balancing, session-tunneling.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RANKWAVE/nodejs-text-net.git"
+  },
+  "keywords": [
+    "client",
+    "server",
+    "text"
+  ],
+  "author": "Dongmoon Lim <'dmlim@rankwave.com'> ('http://www.rankwave.net')",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RANKWAVE/nodejs-text-net/issues"
+  },
+  "homepage": "https://github.com/RANKWAVE/nodejs-text-net#readme",
+  "dependencies": {
+	  "@rankwave/nodejs-util": "*"
+  }
+}
