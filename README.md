@@ -168,4 +168,3 @@ Wed, 10 May 2017 09:07:22 GMT
 ```
 
 * The 'IdleCloseTimeout' and 'idlePingTimeout' are generally not used, if the client and server are configured in the same network. There is a gateway between the client and the server and can be used to prevent the gateway from automatically shutting down or blowing idle connections.
- 
