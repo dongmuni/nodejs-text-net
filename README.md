@@ -37,3 +37,109 @@ Text-base (like SMTP) client-server module. supporting multi worker clients, wok
 	< 100 13 5437 200 OK
 	< <html> ..... </html>
 
+-----
+# Examples
+
+## Simple client/server send & recv message
+
+* In the following example, the client connects to the server and sends a message with the 'NTFY' command, and the server receives the 'NTFY' command message and prints it to the screen.
+
+### server
+
+```
+const textNet = require('@rankwave/nodejs-text-net');
+
+var server = textNet.createServer({logConnection: false, logError: false});
+
+server.listen({port: 1234}, () => {
+	console.log('listening');
+});
+
+server.on('client', (client) => {
+	console.log('client connected');
+	
+	client.on('error', (e) => {
+		console.log(e);
+	});
+	
+	/* To handle command, register callback with event emitter's on() method */
+	
+	client.on('NTFY', (msg) => {
+		console.log('args: ' + msg.args);
+		console.log('body: ' + msg.body.toString());
+	});
+});
+```
+
+### client
+
+```
+const textNet = require('@rankwave/nodejs-text-net');
+
+var client = textNet.connect({port: 1234, logConnection: false, logError: false});
+
+/* command, tid, args, body */
+
+client.sendMessage('NTFY', 0, ['arg1', 'arg2'], 'Hello World!');
+```
+
+### server output
+
+```
+listening
+client connected
+args: arg1,arg2
+body: Hello World!
+```
+
+## Simple client request, server response
+
+* 
+In the example below, when the client connects to the server and requests the current time with the 'TIME' command, the server returns the current time in UTC string.
+
+### server
+
+```
+const textNet = require('@rankwave/nodejs-text-net');
+
+var server = textNet.createServer({logConnection: false, logError: false});
+
+server.listen({port: 1234}, () => {
+	console.log('listening');
+});
+
+server.on('client', (client) => {
+	console.log('client connected');
+	
+	client.on('error', (e) => {
+		console.log(e);
+	});
+	
+	client.on('TIME', (msg) => {
+	
+		/* response with '100' code, same request 'tid', time to first argument */
+		
+		client.sendMessage('100', msg.tid, [new Date().toUTCString()]);
+	});
+});
+```
+
+### client
+
+```
+const textNet = require('@rankwave/nodejs-text-net');
+
+var client = textNet.connect({port: 1234, logConnection: false, logError: false});
+
+/* command, args, body, timeout (ms), response callback */
+
+client.sendRequest('TIME', null, null, 10000, (msg) => {
+	console.log(msg.args[0]);
+});
+```
+
+### client output
+
+```
+Wed, 10 May 2017 09:07:22 GMT
+```
