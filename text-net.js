@@ -294,6 +294,7 @@ function Server(server, options)
 	};
 	
 	server.on('connection', (socket) => {
+		options = options || {};
 		options.isServer = true;
 		this.emit('client', new Client(socket, options));
 	});

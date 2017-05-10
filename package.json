@@ -1,6 +1,6 @@
 {
   "name": "@rankwave/nodejs-text-net",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Text-base (like SMTP) client-server module. supporting multi worker clients, woker-server ping keep-alive, worker load-balancing, session-tunneling.",
   "main": "index.js",
   "scripts": {
