@@ -76,7 +76,7 @@ server.on('client', (client) => {
 ```
 const textNet = require('@rankwave/nodejs-text-net');
 
-var client = textNet.connect({port: 1234, logConnection: false, logError: false});
+var client = textNet.connect({host: 'localhost', port: 1234, logConnection: false, logError: false});
 
 /* command, tid, args, body */
 
@@ -128,7 +128,7 @@ server.on('client', (client) => {
 ```
 const textNet = require('@rankwave/nodejs-text-net');
 
-var client = textNet.connect({port: 1234, logConnection: false, logError: false});
+var client = textNet.connect({host: 'localhost', port: 1234, logConnection: false, logError: false});
 
 /* command, args, body, timeout (ms), response callback */
 
@@ -141,4 +141,28 @@ client.sendRequest('TIME', null, null, 10000, (msg) => {
 
 ```
 Wed, 10 May 2017 09:07:22 GMT
+```
+
+## Automatically close idle clients on the server
+
+* On the server, to clean up a client that does not have an in/out for a certain amount of time, specify the 'idleCloseTimeout' property in milliseconds in the options of createServer() as shown below.
+
+```
+	var server = textNet.createServer({
+		logConnection: false, 
+		logError: false, 
+		idleCloseTimeout: 5000});
+```
+
+## Keeping clients connected to the server
+
+* As shown in the example above, to prevent the server from cleaning up idle clients, the client can periodically send a keep-alive message using the 'PING' command. 'PING' is a reserved command for the **text-net** protocol. The server does not do any special processing for the 'PING' command and does not emit the 'PING' event. To set the 'PING' command transmission interval, you can specify the 'idlePingTimeout' property in milliseconds in the options of the connect() function.
+
+```
+	var client = textNet.connect({
+		host: 'localhost', 
+		port: 1234, 
+		logConnection: false, 
+		logError: false, 
+		idlePingTimeout: 3000});
 ```
