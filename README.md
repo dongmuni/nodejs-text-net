@@ -148,10 +148,10 @@ Wed, 10 May 2017 09:07:22 GMT
 * On the server, to clean up a client that does not have an in/out for a certain amount of time, specify the 'idleCloseTimeout' property in milliseconds in the options of createServer() as shown below.
 
 ```
-	var server = textNet.createServer({
-		logConnection: false, 
-		logError: false, 
-		idleCloseTimeout: 5000});
+var server = textNet.createServer({
+	logConnection: false, 
+	logError: false, 
+	idleCloseTimeout: 5000});
 ```
 
 ## Keeping clients connected to the server
@@ -159,12 +159,12 @@ Wed, 10 May 2017 09:07:22 GMT
 * As shown in the example above, to prevent the server from cleaning up idle clients, the client can periodically send a keep-alive message using the 'PING' command. 'PING' is a reserved command for the **text-net** protocol. The server does not do any special processing for the 'PING' command and does not emit the 'PING' event. To set the 'PING' command transmission interval, you can specify the 'idlePingTimeout' property in milliseconds in the options of the connect() function.
 
 ```
-	var client = textNet.connect({
-		host: 'localhost', 
-		port: 1234, 
-		logConnection: false, 
-		logError: false, 
-		idlePingTimeout: 3000});
+var client = textNet.connect({
+	host: 'localhost', 
+	port: 1234, 
+	logConnection: false, 
+	logError: false, 
+	idlePingTimeout: 3000});
 ```
 
 * The 'IdleCloseTimeout' and 'idlePingTimeout' are generally not used, if the client and server are configured in the same network. There is a gateway between the client and the server and can be used to prevent the gateway from automatically shutting down or blowing idle connections.
