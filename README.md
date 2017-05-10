@@ -40,7 +40,7 @@ Text-base (like SMTP) client-server module. supporting multi worker clients, wok
 -----
 # Examples
 
-## Simple client/server send & recv message
+## Simple client/server send & receive message
 
 * In the following example, the client connects to the server and sends a message with the 'NTFY' command, and the server receives the 'NTFY' command message and prints it to the screen.
 
@@ -94,8 +94,7 @@ body: Hello World!
 
 ## Simple client request, server response
 
-* 
-In the example below, when the client connects to the server and requests the current time with the 'TIME' command, the server returns the current time in UTC string.
+* In the example below, when the client connects to the server and requests the current time with the 'TIME' command, the server returns the current time in UTC string.
 
 ### server
 
