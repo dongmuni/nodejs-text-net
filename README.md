@@ -6,7 +6,7 @@ Text-base (like SMTP) client-server module. supporting multi worker clients, wok
 
 # Text-Net Protocol
 
-### Message Format
+## Message Format
 
 	<code> <tid> <body-length> [<arg> ...]
 	<body>
@@ -499,3 +499,31 @@ client.onSession('FILE', (session) => {
 ```
 
 * The onSession() function is used to handle passive session creation events when the other party creates a session on text-net. The first argument should be the same as the client with the protocol. The second argument is the event handler that will handle the created session. The session arguments can be retrieved with **'session.session_args'** property.
+
+
+## 'SESS' Command Message Format
+
+```
+SESS <tid> <body-length> <flag> <session-id> <protocol> [<session-arg> ...]
+<body>
+```
+
+##### flag
+
+* Similar to TCP flags, the flags of each session message, with four flags: (S | F | P | R)
+* Syn: Start of session stream. Only specified on the Active Open side. The message can have a body.
+* Fin: End of session stream. Because it is a Duplex stream, both Active and Passive Open can be specified. The message can have a body.
+* Push: Attached without S / F / R. Generally, specify a message with data. The message can have a body.
+* Reset: If the session does not exist, it is specified to notify the other party. The message can not have body.
+
+##### session-id
+
+* The key value to identify the session.
+
+##### protocol
+
+* When processing a passive session, you specify to promise each other what content is in the session.
+
+##### session-arg
+
+* Used to send additional data that is difficult to specify in the session stream.
