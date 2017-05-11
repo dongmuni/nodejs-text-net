@@ -37,7 +37,9 @@ Text-base (like SMTP) client-server module. supporting multi worker clients, wok
 	< 100 13 5437 200 OK
 	< <html> ..... </html>
 
+
 -----
+
 # Simple Client/Server Examples
 
 ## Client send & Server receive message
@@ -196,7 +198,9 @@ textNet.autoReconnect(options, (client) => {
 		});
 	});
 ```
+
 -----
+
 # Server & Worker-Pool Model
 
 * A model that consists of one server and several workers, and requests task from the server to the worker. This is useful for distributing tasks (that are difficult to handle on one machine) to multiple machines.
@@ -380,11 +384,118 @@ cc2c2fd2acb050d394002696e8534366: 9. And I tell you on the side, that you better
 
 
 ```
+// client
 textNet.autoReconnect(opt({host: 'localhost', port: 1234, autoRegister: true}), (client) => {
 	...
 });
 
+// server
 var workerPool = textNet.startWorkerPoolServer(opt({port: 1234}), () => {
 	...
 });
 ```
+
+-----
+
+# Session Stream over Text-Net
+
+* Let's say you have a chat application that uses only one connection between client servers. Since a typical conversation message is small in size, it is usually possible to send one text-net message. If you want to send a large photo during a conversation, and you have to use an existing connection, what should you do? If the file is wrapped in a single message, the implementation will be simple, but you will not be able to send the conversation until all the files have been transferred. How do I get a conversation while I'm sending a file? If you cut the file and divide it several times, you can talk.
+* To deal with such problem, we created a session stream similar to a TCP connection on a text-net connection. Basically, the structure of a packet uses a text-net connection, but it can open multiple streams simultaneously on a single connection by marking the beginning and end of the session stream.
+
+
+## Example
+
+* In the following example, the client connects to the server and sends a file named 'image.jpg', and the server receives the file and stores it in the 'recv' directory with the same file name.
+
+```
+// jshint esversion: 6
+
+'use strict';
+
+const textNet = require('@rankwave/nodejs-text-net');
+const rnju    = require('@rankwave/nodejs-util');
+const fs      = require('fs');
+
+const ByteCounter = rnju.stream.ByteCounter;
+
+function opt(options)
+{
+	return Object.assign({
+		debugHeader: false, 
+		logConnection: false, 
+		logError: false, 
+		logSession: true, 
+		debugSession: false}, 
+		options);
+}
+
+function startServer()
+{
+	// listen for client
+	var server = textNet.createServer(opt({}));
+	server.listen(opt({port: 1234}), () => {
+		console.log('listening for clients');
+	});
+	
+	// recv file
+	server.on('client', (client) => {
+		client.onSession('FILE', (session) => {
+			var recvCounter = new ByteCounter(() => console.log(`recv ${recvCounter.bytesPiped} bytes`));
+			var filename = session.session_args[0];
+			var fws = fs.createWriteStream('recv/' + filename, {flags:'w'});
+			session.on('end', () => session.end());
+			session.pipe(recvCounter).pipe(fws);
+		});
+		
+		client.on('error', (e) => {
+		});
+	});
+}
+
+function startClient()
+{
+	var reqCnt = 0;
+	var isEnd = false;
+	
+	// send file
+	var client = textNet.connect(opt({host: 'localhost', port: 1234}), () => {
+		var sendCounter = new ByteCounter(() => console.log(`send ${sendCounter.bytesPiped} bytes`));
+		var filename = 'image.jpg';
+		var frs = fs.createReadStream(filename, {flags:'r'});
+		var session = client.createSession('FILE', [filename]);
+		session.on('end', () => process.exit(0));
+		frs.pipe(sendCounter).pipe(session);
+	});
+}
+
+var appType = process.argv[2];
+
+if ( appType === 'server' )
+{
+	startServer();
+}
+else if ( appType === 'client' )
+{
+	startClient();
+}
+else
+{
+	console.log(`${process.argv[0]} ${process.argv[1]} (client|server)`);
+}
+```
+
+## Code Explanation
+
+```
+var session = client.createSession('FILE', [filename]);
+```
+
+* The createSession() function actively creates a session above text-net. The first argument is the protocol, which promises what type of data to transfer between client and server. The second argument is used to append an additional description of the additional session itself (called **session arguments**). Because session is basically a stream, it is used to convey additional information that is difficult to include in the stream.
+
+```
+client.onSession('FILE', (session) => {
+	...
+});
+```
+
+* The onSession() function is used to handle passive session creation events when the other party creates a session on text-net. The first argument should be the same as the client with the protocol. The second argument is the event handler that will handle the created session. The session arguments can be retrieved with **'session.session_args'** property.
