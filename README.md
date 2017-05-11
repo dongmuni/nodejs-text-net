@@ -440,7 +440,8 @@ function startServer()
 	// recv file
 	server.on('client', (client) => {
 		client.onSession('FILE', (session) => {
-			var recvCounter = new ByteCounter(() => console.log(`recv ${recvCounter.bytesPiped} bytes`));
+			var recvCounter = new ByteCounter(() => 
+				console.log(`recv ${recvCounter.bytesPiped} bytes`));
 			var filename = session.session_args[0];
 			var fws = fs.createWriteStream('recv/' + filename, {flags:'w'});
 			session.on('end', () => session.end());
@@ -459,7 +460,8 @@ function startClient()
 	
 	// send file
 	var client = textNet.connect(opt({host: 'localhost', port: 1234}), () => {
-		var sendCounter = new ByteCounter(() => console.log(`send ${sendCounter.bytesPiped} bytes`));
+		var sendCounter = new ByteCounter(() => 
+			console.log(`send ${sendCounter.bytesPiped} bytes`));
 		var filename = 'image.jpg';
 		var frs = fs.createReadStream(filename, {flags:'r'});
 		var session = client.createSession('FILE', [filename]);
