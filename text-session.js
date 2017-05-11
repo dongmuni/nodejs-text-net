@@ -19,13 +19,14 @@ const getOption = rnju.common.getOption;
 	SESS [tid] [body_length] [session_id] [flags] [protocol] [args...]
 	
 	- session_id: 
-		- server 홀수
-		- client 짝수
+		- server: odd number
+		- client: even number
 	
 	- flags
-		- S: 시작
-		- F: 끝
-		- R: 거부
+		- S: Start Session
+		- F: End Session (Bidirectional)
+		- R: Refuse Session
+		- P: Push Data
 	
 	- protocol
 		- HTTP
