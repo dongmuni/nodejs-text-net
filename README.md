@@ -513,9 +513,9 @@ SESS <tid> <body-length> <flag> <session-id> <protocol> [<session-arg> ...]
 ##### flag
 
 * Similar to TCP flags, the flags of each session message, with four flags: (S | F | P | R)
-* Syn: Start of session stream. Only specified on the Active Open side. The message can have a body.
-* Fin: End of session stream. Because it is a Duplex stream, both Active and Passive Open can be specified. The message can have a body.
-* Push: Attached without S / F / R. Generally, specify a message with data. The message can have a body.
+* Syn: Start of session stream. Only specified on the Active Open side. The message can have body.
+* Fin: End of session stream. Because it is a Duplex stream, both Active and Passive Open can be specified. The message can have body.
+* Push: Attached without S / F / R. Generally, specify a message with data. The message can have body.
 * Reset: If the session does not exist, it is specified to notify the other party. The message can not have body.
 
 ##### session-id
