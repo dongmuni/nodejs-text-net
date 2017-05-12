@@ -29,7 +29,7 @@ Text-base (like SMTP) client-server module. supporting multi worker clients, wok
 ###### arg
 
 * Message argument
-* Since SPACE(s) are delimiters, each argument must be percent(%) encoded, so that it does not contain SPACE, CR, LF, or '%'.
+* Since SPACE(s) are delimiters, each argument must be percent(%) encoded, so that it does not contain **SPACE**, **CR**, **LF**, or **'%'**.
 
 ##### Message Format Example
 	> WGET 13 0 https://github.com
@@ -153,7 +153,7 @@ Wed, 10 May 2017 09:07:22 GMT
 
 ## Automatically close idle clients on the server
 
-* On the server, to clean up a client that does not have an in/out for a certain amount of time, specify the **'idleCloseTimeout'** property (in milliseconds) in the options of createServer() as shown below.
+* On the server, to clean up a client that does not have an in/out for a certain amount of time, specify the **'idleCloseTimeout'** property (in milliseconds) in the options of **createServer()** as shown below.
 
 ```
 var server = textNet.createServer({
@@ -164,7 +164,7 @@ var server = textNet.createServer({
 
 ## Keeping clients connected to the server
 
-* As shown in the example above, to prevent the server from cleaning up idle clients, the client can periodically send a keep-alive message using the 'PING' command. 'PING' is a reserved command for the **text-net** protocol. The server does not do any special processing for the 'PING' command and does not emit the 'PING' event. To set the 'PING' command transmission interval, you can specify the **'idlePingTimeout'** property (in milliseconds) in the options of the connect() function.
+* As shown in the example above, to prevent the server from cleaning up idle clients, the client can periodically send a keep-alive message using the **'PING'** command. **'PING'** is a reserved command for the **text-net** protocol. The server does not do any special processing for the **'PING'** command and does not emit the **'PING'** event. To set the **'PING'** command transmission interval, you can specify the **'idlePingTimeout'** property (in milliseconds) in the options of the connect() function.
 
 ```
 var client = textNet.connect({
@@ -175,11 +175,11 @@ var client = textNet.connect({
 	idlePingTimeout: 3000});
 ```
 
-* The 'IdleCloseTimeout' and 'idlePingTimeout' are generally not used, if the client and server are configured in the same network. There is a gateway between the client and the server and can be used to prevent the gateway from automatically shutting down or blowing idle connections.
+* The **'idleCloseTimeout'** and **'idlePingTimeout'** are generally not used, if the client and server are configured in the same network. There is a gateway between the client and the server and can be used to prevent the gateway from automatically shutting down or blowing idle connections.
 
 ## Automatically Reconnect to the server
 
-* If the connection to the server is lost, the client can automatically reconnect. It may attempt to reconnect periodically, if the server is restared and disconnected, or if it is unable to connect to the server due to network problems. You can adjust the reconnect interval by specifying the **'reconnectInterval'** property (in milliseconds) in the options of the autoReconnect() function. 5000 ms if omitted.
+* If the connection to the server is lost, the client can automatically reconnect. It may attempt to reconnect periodically, if the server is re-stared and disconnected, or if it is unable to connect to the server due to network problems. You can adjust the reconnect interval by specifying the **'reconnectInterval'** property (in milliseconds) in the options of the **autoReconnect()** function. 5000 ms if omitted.
 
 ```
 var options = {
@@ -378,9 +378,9 @@ cc2c2fd2acb050d394002696e8534366: 9. And I tell you on the side, that you better
 ## Code Explanation
 
 
-* If you set **'autoRegister'** property to true in the options of connect() or autoReconnect() function, The client sends the 'RGST' command after connecting to the server. The 'RGST' command means, "I am a worker and I am ready to do some task."
-* When the server receives the 'RGST' command, the startWorkerPoolServer() function puts the client into the worker pool. When a connection is lost, it is automatically removed client from the worker pool.
-* The workerPool's sendMessage() and sendRequest() functions are the same as client's sendMessage() and sendRequest(), which call real sendMessage() and sendRequest() by assigning the client in the worker pool as round-robin.
+* If you set **'autoRegister'** property to true in the options of **connect()** or **autoReconnect()** function, The client sends the **'RGST'** command after connecting to the server. The **'RGST'** command means, *"I am a worker and I am ready to do some task."*
+* When the server receives the **'RGST'** command, the **startWorkerPoolServer()** function puts the client into the worker pool. When a connection is lost, it is automatically removed client from the worker pool.
+* The workerPool's **sendMessage()** and **sendRequest()** functions are the same as client's **sendMessage()** and **sendRequest()**, which call real **sendMessage()** and **sendRequest()** by assigning the client in the worker pool as round-robin.
 
 
 ```
@@ -492,7 +492,7 @@ else
 var session = client.createSession('FILE', [filename]);
 ```
 
-* The createSession() function actively creates a session above text-net. The first argument is the protocol, which promises what type of data to transfer between client and server. The second argument is used to append an additional description of the additional session itself (called **session arguments**). Because session is basically a stream, it is used to convey additional information that is difficult to include in the stream.
+* The **createSession()** function actively creates a session above **text-net**. The first argument is the protocol, which promises what type of data to transfer between client and server. The second argument is used to append an additional description of the additional session itself (called **session arguments**). Because session is basically a stream, it is used to convey additional information that is difficult to include in the stream.
 
 ```
 client.onSession('FILE', (session) => {
@@ -500,7 +500,7 @@ client.onSession('FILE', (session) => {
 });
 ```
 
-* The onSession() function is used to handle passive session creation events when the other party creates a session on text-net. The first argument should be the same as the client with the protocol. The second argument is the event handler that will handle the created session. The session arguments can be retrieved with **'session.session_args'** property.
+* The **onSession()** function is used to handle passive session creation events when the other party creates a session on **text-net**. The first argument should be the same as the client with the protocol. The second argument is the event handler that will handle the created session. The session arguments can be retrieved with **'session.session_args'** property.
 
 
 ## 'SESS' Command Message Format
@@ -512,11 +512,11 @@ SESS <tid> <body-length> <flag> <session-id> <protocol> [<session-arg> ...]
 
 ##### flag
 
-* Similar to TCP flags, the flags of each session message, with four flags: (S | F | P | R)
-* Syn: Start of session stream. Only specified on the Active Open side. The message can have body.
-* Fin: End of session stream. Because it is a Duplex stream, both Active and Passive Open can be specified. The message can have body.
-* Push: Attached without S / F / R. Generally, specify a message with data. The message can have body.
-* Reset: If the session does not exist, it is specified to notify the other party. The message can not have body.
+* Similar to TCP flags, the flags of each session message, with four flags: **(S | F | P | R)**
+* **S**yn: Start of session stream. Only specified on the Active Open side. The message can have body.
+* **F**in: End of session stream. Because it is a Duplex stream, both Active and Passive Open can be specified. The message can have body.
+* **P**ush: Attached without **S**, **F**, **R**. Generally, specify a message with data. The message can have body.
+* **R**eset: If the session does not exist, it is specified to notify the other party. The message can not have body.
 
 ##### session-id
 
