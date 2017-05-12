@@ -8,8 +8,10 @@ Text-base (like SMTP) client-server module. supporting multi worker clients, wok
 
 ## Message Format
 
-	<code> <tid> <body-length> [<arg> ...]
-	<body>
+```
+<code> <tid> <body-length> [<arg> ...]
+<body>
+```
 	
 ###### code
 
@@ -32,11 +34,13 @@ Text-base (like SMTP) client-server module. supporting multi worker clients, wok
 * Since SPACE(s) are delimiters, each argument must be percent(%) encoded, so that it does not contain **SPACE**, **CR**, **LF**, or **'%'**.
 
 ##### Message Format Example
-	> WGET 13 0 https://github.com
-	
-	< 100 13 5437 200 OK
-	< <html> ..... </html>
 
+```
+> WGET 13 0 https://github.com
+
+< 100 13 5437 200 OK
+< <html> ..... </html>
+```
 
 -----
 
@@ -48,7 +52,7 @@ Text-base (like SMTP) client-server module. supporting multi worker clients, wok
 
 ##### server.js
 
-```
+```js
 const textNet = require('@rankwave/nodejs-text-net');
 
 var server = textNet.createServer({logConnection: false, logError: false});
@@ -75,7 +79,7 @@ server.on('client', (client) => {
 
 ##### client.js
 
-```
+```js
 const textNet = require('@rankwave/nodejs-text-net');
 
 var options = {host: 'localhost', port: 1234, logConnection: false, logError: false};
@@ -102,7 +106,7 @@ body: Hello World!
 
 ##### server.js
 
-```
+```js
 const textNet = require('@rankwave/nodejs-text-net');
 
 var server = textNet.createServer({logConnection: false, logError: false});
@@ -127,7 +131,7 @@ server.on('client', (client) => {
 
 ##### client.js
 
-```
+```js
 const textNet = require('@rankwave/nodejs-text-net');
 
 var options = {host: 'localhost', port: 1234, logConnection: false, logError: false};
@@ -155,7 +159,7 @@ Wed, 10 May 2017 09:07:22 GMT
 
 * On the server, to clean up a client that does not have an in/out for a certain amount of time, specify the **'idleCloseTimeout'** property (in milliseconds) in the options of **createServer()** as shown below.
 
-```
+```js
 var server = textNet.createServer({
 	logConnection: false, 
 	logError: false, 
@@ -166,7 +170,7 @@ var server = textNet.createServer({
 
 * As shown in the example above, to prevent the server from cleaning up idle clients, the client can periodically send a keep-alive message using the **'PING'** command. **'PING'** is a reserved command for the **text-net** protocol. The server does not do any special processing for the **'PING'** command and does not emit the **'PING'** event. To set the **'PING'** command transmission interval, you can specify the **'idlePingTimeout'** property (in milliseconds) in the options of the connect() function.
 
-```
+```js
 var client = textNet.connect({
 	host: 'localhost', 
 	port: 1234, 
@@ -181,7 +185,7 @@ var client = textNet.connect({
 
 * If the connection to the server is lost, the client can automatically reconnect. It may attempt to reconnect periodically, if the server is re-stared and disconnected, or if it is unable to connect to the server due to network problems. You can adjust the reconnect interval by specifying the **'reconnectInterval'** property (in milliseconds) in the options of the **autoReconnect()** function. 5000 ms if omitted.
 
-```
+```js
 var options = {
 	host: 'localhost', 
 	port: 1234, 
@@ -210,7 +214,7 @@ textNet.autoReconnect(options, (client) => {
 * In the following example, the worker model implements the function of obtaining the hash value of the text. The 'HASH' command reads the body and returns the md5 hash value. The server receives the 'HASH' request from the client, distributes it to the workers, and forwards the response back to the client.
 
 ##### hash.js
-```
+```js
 // jshint esversion: 6
 
 'use strict';
@@ -383,7 +387,7 @@ cc2c2fd2acb050d394002696e8534366: 9. And I tell you on the side, that you better
 * The workerPool's **sendMessage()** and **sendRequest()** functions are the same as client's **sendMessage()** and **sendRequest()**, which call real **sendMessage()** and **sendRequest()** by assigning the client in the worker pool as round-robin.
 
 
-```
+```js
 // client
 textNet.autoReconnect(opt({host: 'localhost', port: 1234, autoRegister: true}), (client) => {
 	...
@@ -407,7 +411,7 @@ var workerPool = textNet.startWorkerPoolServer(opt({port: 1234}), () => {
 
 * In the following example, the client connects to the server and sends a file named 'image.jpg', and the server receives the file and stores it in the 'recv' directory with the same file name.
 
-```
+```js
 // jshint esversion: 6
 
 'use strict';
@@ -488,13 +492,13 @@ else
 
 ## Code Explanation
 
-```
+```js
 var session = client.createSession('FILE', [filename]);
 ```
 
 * The **createSession()** function actively creates a session above **text-net**. The first argument is the protocol, which promises what type of data to transfer between client and server. The second argument is used to append an additional description of the additional session itself (called **session arguments**). Because session is basically a stream, it is used to convey additional information that is difficult to include in the stream.
 
-```
+```js
 client.onSession('FILE', (session) => {
 	...
 });
