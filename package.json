@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/RANKWAVE/nodejs-text-net#readme",
   "dependencies": {
-	  "@rankwave/nodejs-util": "*"
+    "@rankwave/nodejs-util": "*"
   }
 }
