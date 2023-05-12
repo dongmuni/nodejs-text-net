@@ -6,7 +6,7 @@
 'use strict';
 
 const util = require('util');
-const rnju  = require('@rankwave/nodejs-util');
+const rnju  = require('@dongmuni/nodejs-util');
 const decodeText = rnju.encoder.decodeText;
 
 function msg2str(msg)

@@ -2,8 +2,8 @@
 
 'use strict';
 
-const textNet = require('@rankwave/nodejs-text-net');
-const rnju = require('@rankwave/nodejs-util');
+const textNet = require('@dongmuni/nodejs-text-net');
+const rnju = require('@dongmuni/nodejs-util');
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');

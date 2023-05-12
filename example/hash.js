@@ -2,7 +2,7 @@
 
 'use strict';
 
-const textNet = require('@rankwave/nodejs-text-net');
+const textNet = require('@dongmuni/nodejs-text-net');
 const crypto = require('crypto');
 const readline = require('readline');
 

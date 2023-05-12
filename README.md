@@ -53,7 +53,7 @@ Text-base (like SMTP) client-server module. supporting multi worker clients, wok
 ##### server.js
 
 ```js
-const textNet = require('@rankwave/nodejs-text-net');
+const textNet = require('@dongmuni/nodejs-text-net');
 
 var server = textNet.createServer({logConnection: false, logError: false});
 
@@ -80,7 +80,7 @@ server.on('client', (client) => {
 ##### client.js
 
 ```js
-const textNet = require('@rankwave/nodejs-text-net');
+const textNet = require('@dongmuni/nodejs-text-net');
 
 var options = {host: 'localhost', port: 1234, logConnection: false, logError: false};
 
@@ -107,7 +107,7 @@ body: Hello World!
 ##### server.js
 
 ```js
-const textNet = require('@rankwave/nodejs-text-net');
+const textNet = require('@dongmuni/nodejs-text-net');
 
 var server = textNet.createServer({logConnection: false, logError: false});
 
@@ -132,7 +132,7 @@ server.on('client', (client) => {
 ##### client.js
 
 ```js
-const textNet = require('@rankwave/nodejs-text-net');
+const textNet = require('@dongmuni/nodejs-text-net');
 
 var options = {host: 'localhost', port: 1234, logConnection: false, logError: false};
 
@@ -219,7 +219,7 @@ textNet.autoReconnect(options, (client) => {
 
 'use strict';
 
-const textNet = require('@rankwave/nodejs-text-net');
+const textNet = require('@dongmuni/nodejs-text-net');
 const crypto = require('crypto');
 const readline = require('readline');
 
@@ -416,8 +416,8 @@ var workerPool = textNet.startWorkerPoolServer(opt({port: 1234}), () => {
 
 'use strict';
 
-const textNet = require('@rankwave/nodejs-text-net');
-const rnju    = require('@rankwave/nodejs-util');
+const textNet = require('@dongmuni/nodejs-text-net');
+const rnju    = require('@dongmuni/nodejs-util');
 const fs      = require('fs');
 
 const ByteCounter = rnju.stream.ByteCounter;

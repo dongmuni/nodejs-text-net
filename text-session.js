@@ -8,7 +8,7 @@
 const util = require('util');
 const EventEmitter = require('events');
 const stream = require('stream');
-const rnju = require('@rankwave/nodejs-util');
+const rnju = require('@dongmuni/nodejs-util');
 const textParser = require('./text-parser');
 
 const Duplex = stream.Duplex;
